@@ -42,8 +42,29 @@ export const RemotionRoot: React.FC = () => {
 						fps
 					);
 
+					const frames = Array.from(
+						{length: durationInFrames},
+						() => [] as string[]
+					);
+
+					for (const segment of segmentationData.output.segments) {
+						const startFrame = timeToFrame(segment.start, fps);
+						const stopFrame = timeToFrame(segment.stop, fps);
+
+						for (
+							let frameIndex = startFrame;
+							frameIndex < stopFrame && frameIndex < durationInFrames;
+							frameIndex++
+						) {
+							frames[frameIndex].push(segment.speaker);
+						}
+					}
+
 					return {
 						durationInFrames,
+						props: {
+							frames,
+						},
 					};
 				}}
 			/>
