@@ -1,0 +1,42 @@
+{
+  "name": "speaker-scene-video",
+  "version": "1.0.0",
+  "description": "My Remotion video",
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion render MyComp out/video.mp4",
+    "upgrade": "remotion upgrade",
+    "test": "eslint src --ext ts,tsx,js,jsx && tsc"
+  },
+  "repository": {},
+  "license": "UNLICENSED",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "webpack"
+      ]
+    }
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.132",
+    "@remotion/cli": "4.0.132",
+    "@remotion/zod-types": "4.0.132",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "remotion": "4.0.132",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config": "4.0.132",
+    "@types/react": "^18.0.26",
+    "@types/web": "^0.0.86",
+    "eslint": "^8.43.0",
+    "prettier": "^2.8.8",
+    "@remotion/tailwind": "4.0.132",
+    "typescript": "^4.9.4"
+  },
+  "packageManager": "npm@9.9.0"
+}
