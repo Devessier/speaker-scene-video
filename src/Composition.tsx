@@ -1,11 +1,8 @@
 import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {z} from 'zod';
-import {zColor} from '@remotion/zod-types';
 
 export const myCompSchema = z.object({
-	titleText: z.string(),
-	titleColor: zColor(),
-	logoColor: zColor(),
+	frames: z.array(z.array(z.string())),
 });
 
 export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({}) => {

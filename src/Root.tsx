@@ -14,9 +14,7 @@ export const RemotionRoot: React.FC = () => {
 				height={720}
 				schema={myCompSchema}
 				defaultProps={{
-					titleText: 'Welcome to Remotion with Tailwind CSS',
-					titleColor: '#000000',
-					logoColor: '#00bfff',
+					frames: [],
 				}}
 			/>
 		</>
