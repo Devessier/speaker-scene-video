@@ -19,6 +19,8 @@ export const RemotionRoot: React.FC = () => {
 					frames: [],
 				}}
 				calculateMetadata={async () => {
+					const fps = 30;
+
 					const res = await fetch(staticFile('/segmentation.json'));
 					const segmentationData = z
 						.object({
@@ -34,12 +36,34 @@ export const RemotionRoot: React.FC = () => {
 						})
 						.parse(await res.json());
 
-					console.log(segmentationData.output.segments);
-
 					const audioData = await getAudioData(staticFile('/podcast.m4a'));
-					console.log({audioData});
+					const durationInFrames = secondsToFrames(
+						audioData.durationInSeconds,
+						fps
+					);
+
+					return {
+						durationInFrames,
+					};
 				}}
 			/>
 		</>
 	);
 };
+
+/**
+ * Parse timecodes in the format "hours:minutes:seconds.milliseconds" to a number of frames.
+ */
+function timeToFrame(time: string, fps: number): number {
+	const [hours, minutes, secondsGroups] = time.split(':');
+	const [seconds, milliseconds] = secondsGroups.split('.');
+
+	return (
+		(Number(hours) * 3600 + Number(minutes) * 60 + Number(seconds)) * fps +
+		secondsToFrames(Number(`0.${milliseconds}`), fps)
+	);
+}
+
+function secondsToFrames(float: number, fps: number) {
+	return Math.floor(float * fps);
+}
