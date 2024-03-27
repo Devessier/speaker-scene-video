@@ -1,4 +1,4 @@
-import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, Img, staticFile, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 
 export const myCompSchema = z.object({
@@ -70,6 +70,8 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 					</div>
 				</div>
 			</AbsoluteFill>
+
+			<Audio src={staticFile('/podcast.m4a')} />
 		</>
 	);
 };
