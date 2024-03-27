@@ -1,26 +1,33 @@
-import {AbsoluteFill, Img, staticFile} from 'remotion';
+import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 
 export const myCompSchema = z.object({
 	frames: z.array(z.array(z.string())),
 });
 
-export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({}) => {
+export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
+	frames,
+}) => {
+	const frame = useCurrentFrame();
+
 	const speakers = [
 		{
 			name: 'Adam',
 			color: '#0b0b0b',
 			picture: staticFile('adam.jpg'),
+			speakerLabel: 'A',
 		},
 		{
 			name: 'Ian',
 			color: '#342f2a',
 			picture: staticFile('ian.jpg'),
+			speakerLabel: 'B',
 		},
 		{
 			name: 'Aaron',
 			color: '#e2ad9d',
 			picture: staticFile('aaron.jpg'),
+			speakerLabel: 'C',
 		},
 	];
 
@@ -45,7 +52,11 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({}) => {
 								<div className="flex justify-center items-center">
 									<Img
 										src={speaker.picture}
-										className="size-32 rounded-full shadow-xl"
+										className={`size-32 rounded-full shadow-xl ${
+											frames[frame].includes(speaker.speakerLabel) === true
+												? 'ring-4 ring-green-400'
+												: ''
+										}`}
 									/>
 								</div>
 
