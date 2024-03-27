@@ -10,11 +10,17 @@ export const myCompSchema = z.object({
 
 export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({}) => {
 	return (
-		<AbsoluteFill>
-			<Img
-				src={staticFile('/background.jpg')}
-				className="h-full w-full object-cover object-center"
-			/>
-		</AbsoluteFill>
+		<>
+			<AbsoluteFill>
+				<Img
+					src={staticFile('/background.jpg')}
+					className="h-full w-full object-cover object-center"
+				/>
+			</AbsoluteFill>
+
+			<AbsoluteFill>
+				<div className="bg-zinc-900 mx-12 my-10 h-full rounded-md shadow-2xl" />
+			</AbsoluteFill>
+		</>
 	);
 };
