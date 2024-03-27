@@ -8,6 +8,8 @@
 import {Config} from '@remotion/cli/config';
 import {webpackOverride} from './src/webpack-override';
 
+Config.setScale(2);
+
 Config.setVideoImageFormat('jpeg');
 Config.setOverwriteOutput(true);
 
