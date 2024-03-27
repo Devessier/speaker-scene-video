@@ -1,4 +1,5 @@
 import {Composition, staticFile} from 'remotion';
+import {getAudioData} from '@remotion/media-utils';
 import {z} from 'zod';
 import {MyComposition, myCompSchema} from './Composition';
 import './style.css';
@@ -34,6 +35,9 @@ export const RemotionRoot: React.FC = () => {
 						.parse(await res.json());
 
 					console.log(segmentationData.output.segments);
+
+					const audioData = await getAudioData(staticFile('/podcast.m4a'));
+					console.log({audioData});
 				}}
 			/>
 		</>
