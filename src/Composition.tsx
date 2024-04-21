@@ -1,4 +1,4 @@
-import {AbsoluteFill, Audio, Img, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, Img, Sequence, staticFile} from 'remotion';
 import {z} from 'zod';
 
 export const myCompSchema = z.object({
@@ -8,11 +8,9 @@ export const myCompSchema = z.object({
 });
 
 export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
-	frames,
+	speakers,
 }) => {
-	const frame = useCurrentFrame();
-
-	const speakers = [
+	const speakersMetadata = [
 		{
 			name: 'Adam',
 			color: '#0b0b0b',
@@ -45,21 +43,31 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 			<AbsoluteFill>
 				<div className="bg-zinc-900 mx-12 my-10 h-full rounded-md shadow-2xl">
 					<div className="grid grid-cols-3 grid-rows-1 p-4 gap-x-2 h-full">
-						{speakers.map((speaker, index) => (
+						{speakersMetadata.map((speaker, index) => (
 							<div
 								key={index}
 								style={{backgroundColor: speaker.color}}
 								className="grid grid-rows-[1fr,auto] rounded-md"
 							>
 								<div className="flex justify-center items-center">
-									<Img
-										src={speaker.picture}
-										className={`size-32 rounded-full shadow-xl ${
-											frames[frame].includes(speaker.speakerLabel) === true
-												? 'ring-4 ring-green-400'
-												: ''
-										}`}
-									/>
+									<div className="relative">
+										<Img
+											src={speaker.picture}
+											className="size-32 rounded-full shadow-xl"
+										/>
+
+										{speakers[speaker.speakerLabel].map((sequence, index) => (
+											<Sequence
+												key={index}
+												from={sequence.startFrame}
+												durationInFrames={
+													sequence.stopFrame - sequence.startFrame
+												}
+											>
+												<GreenRing />
+											</Sequence>
+										))}
+									</div>
 								</div>
 
 								<div>
@@ -77,3 +85,7 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 		</>
 	);
 };
+
+function GreenRing() {
+	return <div className="ring-4 ring-green-400 w-full h-full rounded-full" />;
+}
