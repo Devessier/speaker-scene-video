@@ -2,7 +2,9 @@ import {AbsoluteFill, Audio, Img, staticFile, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 
 export const myCompSchema = z.object({
-	frames: z.array(z.array(z.string())),
+	speakers: z.record(
+		z.array(z.object({startFrame: z.number(), stopFrame: z.number()}))
+	),
 });
 
 export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({

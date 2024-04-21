@@ -16,7 +16,7 @@ export const RemotionRoot: React.FC = () => {
 				height={720}
 				schema={myCompSchema}
 				defaultProps={{
-					frames: [],
+					speakers: {},
 				}}
 				calculateMetadata={async () => {
 					const fps = 30;
@@ -42,28 +42,26 @@ export const RemotionRoot: React.FC = () => {
 						fps
 					);
 
-					const frames = Array.from(
-						{length: durationInFrames},
-						() => [] as string[]
-					);
+					const speakers: Record<
+						string,
+						Array<{startFrame: number; stopFrame: number}>
+					> = {};
 
 					for (const segment of segmentationData.output.segments) {
 						const startFrame = timeToFrame(segment.start, fps);
 						const stopFrame = timeToFrame(segment.stop, fps);
 
-						for (
-							let frameIndex = startFrame;
-							frameIndex < stopFrame && frameIndex < durationInFrames;
-							frameIndex++
-						) {
-							frames[frameIndex].push(segment.speaker);
+						if (speakers[segment.speaker] === undefined) {
+							speakers[segment.speaker] = [];
 						}
+
+						speakers[segment.speaker].push({startFrame, stopFrame});
 					}
 
 					return {
 						durationInFrames,
 						props: {
-							frames,
+							speakers,
 						},
 					};
 				}}
