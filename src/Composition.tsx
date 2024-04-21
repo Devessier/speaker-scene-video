@@ -77,7 +77,10 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 													ANIMATION_DURATION
 												}
 											>
-												<GreenRing />
+												<GreenRing
+													startFrame={sequence.startFrame}
+													stopFrame={sequence.stopFrame}
+												/>
 											</Sequence>
 										))}
 									</div>
@@ -99,7 +102,13 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 	);
 };
 
-function GreenRing() {
+function GreenRing({
+	stopFrame,
+	startFrame,
+}: {
+	startFrame: number;
+	stopFrame: number;
+}) {
 	const {fps} = useVideoConfig();
 	const frame = useCurrentFrame();
 
@@ -109,10 +118,19 @@ function GreenRing() {
 		durationInFrames: ANIMATION_DURATION,
 	});
 
+	const exit = spring({
+		fps,
+		frame,
+		durationInFrames: ANIMATION_DURATION,
+		delay: stopFrame - startFrame,
+	});
+
+	const animation = enter - exit;
+
 	return (
 		<div
 			className="ring-4 ring-green-400 w-full h-full rounded-full"
-			style={{opacity: enter}}
+			style={{opacity: animation}}
 		/>
 	);
 }
