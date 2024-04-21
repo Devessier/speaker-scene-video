@@ -1,4 +1,13 @@
-import {AbsoluteFill, Audio, Img, Sequence, staticFile} from 'remotion';
+import {
+	AbsoluteFill,
+	Audio,
+	Img,
+	Sequence,
+	spring,
+	staticFile,
+	useCurrentFrame,
+	useVideoConfig,
+} from 'remotion';
 import {z} from 'zod';
 
 export const myCompSchema = z.object({
@@ -6,6 +15,8 @@ export const myCompSchema = z.object({
 		z.array(z.object({startFrame: z.number(), stopFrame: z.number()}))
 	),
 });
+
+const ANIMATION_DURATION = 15;
 
 export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 	speakers,
@@ -61,7 +72,9 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 												key={index}
 												from={sequence.startFrame}
 												durationInFrames={
-													sequence.stopFrame - sequence.startFrame
+													sequence.stopFrame -
+													sequence.startFrame +
+													ANIMATION_DURATION
 												}
 											>
 												<GreenRing />
@@ -87,5 +100,19 @@ export const MyComposition: React.FC<z.infer<typeof myCompSchema>> = ({
 };
 
 function GreenRing() {
-	return <div className="ring-4 ring-green-400 w-full h-full rounded-full" />;
+	const {fps} = useVideoConfig();
+	const frame = useCurrentFrame();
+
+	const enter = spring({
+		fps,
+		frame,
+		durationInFrames: ANIMATION_DURATION,
+	});
+
+	return (
+		<div
+			className="ring-4 ring-green-400 w-full h-full rounded-full"
+			style={{opacity: enter}}
+		/>
+	);
 }
